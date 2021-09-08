@@ -22,14 +22,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private Environment env;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            http.headers().frameOptions().disable();
-        }
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeRequests().antMatchers("/h2-console/**").permitAll().anyRequest().authenticated().and()
+                .formLogin();
 
-        http.cors().and().csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
+        httpSecurity.csrf().ignoringAntMatchers("/h2-console/**");
+        httpSecurity.headers().frameOptions().sameOrigin();
     }
 
     @Bean
