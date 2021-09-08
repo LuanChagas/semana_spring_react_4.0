@@ -17,17 +17,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private Environment env;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests().antMatchers("/h2-console/**").permitAll().anyRequest().authenticated().and()
-                .formLogin();
+        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+            httpSecurity.headers().frameOptions().disable();
+        }
 
-        httpSecurity.csrf().ignoringAntMatchers("/h2-console/**");
-        httpSecurity.headers().frameOptions().sameOrigin();
+        httpSecurity.cors().and().csrf().disable();
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean
@@ -38,4 +39,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }
