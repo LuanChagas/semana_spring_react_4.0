@@ -1,3 +1,3 @@
-const BASE_URL = 'https://semana-springboot-react.herokuapp.com/';
+const BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
 
 export default BASE_URL;
