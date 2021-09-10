@@ -1,7 +1,25 @@
+import axios from "axios"
 import Chart from "react-apexcharts"
-
+import BASE_URL from "utils/request"
+import { SaleSum } from "types/sale"
+type ChartData = {
+    labels: string[];
+    series: number[];
+}
 const DonutChat
     = () => {
+        let chartData: ChartData = { labels: [], series: [] }
+
+        axios.get(`${BASE_URL}sales/amount-by-seller`).then(
+            response => {
+                const data = response.data as SaleSum[];
+                const MyLabels = data.map(x => x.sellerName);
+                const MySeries = data.map(x => x.sum);
+
+                chartData = { labels: MyLabels, series: MySeries }
+                console.log(chartData)
+            }
+        )
 
         const mockData = {
             series: [477138, 499928, 444867, 220426, 473088],
