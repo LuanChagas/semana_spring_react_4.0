@@ -13,7 +13,7 @@ const DonutChat = () => {
 
 
     useEffect(() => {
-        axios.get(`${BASE_URL}sales/amount-by-seller`).then(
+        axios.get(`${BASE_URL}/sales/amount-by-seller`).then(
             response => {
                 const data = response.data as SaleSum[];
                 const MyLabels = data.map(x => x.sellerName);

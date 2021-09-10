@@ -32,7 +32,7 @@ const BarChat = () => {
 
 
     useEffect(() => {
-        axios.get(`${BASE_URL}sales/sucess-by-seller`).then(
+        axios.get(`${BASE_URL}/sales/sucess-by-seller`).then(
             response => {
                 const data = response.data as SaleSucess[];
                 const MyLabels = data.map(x => x.sellerName);
